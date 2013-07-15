@@ -5,7 +5,7 @@
 #include <ngx_list.h>
 #include <ngx_http_request.h>
 
-#include "fileOperating.h"
+/*#include "fileOperating.h"*/
 /*extern void createFile(char * fileName);*/
 /*
 
@@ -79,7 +79,7 @@ ngx_module_t  ngx_http_mytest_module = {
 static ngx_int_t ngx_http_mytest_handler(ngx_http_request_t *r)  
 {  
 
-    createFile("/tmp/nginxtmp");
+/*    createFile("/tmp/nginxtmp");*/
 /*    createFile("/tmp/nginxtmp2");*/
 /*	FILE * myfile=fopen("/tmp/nginxtmp", "w+");*/
 /*	fclose(myfile);*/

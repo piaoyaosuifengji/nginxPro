@@ -172,7 +172,7 @@ ngx_http_index_handler(ngx_http_request_t *r)
         if (index[i].values == NULL) {
 
             /* index[i].name.len includes the terminating '\0' */
-
+		//
             ngx_memcpy(name, index[i].name.data, index[i].name.len);
 
             path.len = (name + index[i].name.len - 1) - path.data;
