@@ -5,7 +5,7 @@
 #include <ngx_list.h>
 #include <ngx_http_request.h>
 
-#include "fileOperating.h"
+/*#include "fileOperating.h"*/
 /*extern void createFile(char * fileName);*/
 /*
 

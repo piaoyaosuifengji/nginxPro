@@ -6,8 +6,6 @@
 #include <unistd.h>
 #include <string.h>
 
-#include <gtk/gtk.h>
-
 #include <malloc.h>
 
 #include "fileOperating.h"
@@ -32,8 +30,8 @@ void emptyFile(char * fileName)
 int searchStrInFile(char * FileName,char * searchstr)
 {
 
-	g_return_if_fail( FileName != NULL);
-	g_return_if_fail( searchstr != NULL);
+/*	g_return_if_fail( FileName != NULL);*/
+/*	g_return_if_fail( searchstr != NULL);*/
 
 	//char * fileName=configFile;
         int len1=0;
@@ -109,7 +107,7 @@ void putSubStrIntoOther(char * a,char *b,int startA,int startB,int len)
 }
  char * getLineInFile(char * FileName,int num)
 {
-	g_return_if_fail( num > 0);
+/*	g_return_if_fail( num > 0);*/
 	//findAllLine(FileName,num);
         int line=0;
         int *loc= (int *)findAllLine(FileName,&line);
@@ -257,7 +255,8 @@ int     delStrInFile(char * FileName,int len,int point)//note:the point means th
 	if(len >  numFromPointToEnd)
 	{
 	int fd=fileno(myfile);
-	ftruncate(fd,point-1);
+	int res=ftruncate(fd,point-1);
+	res++;
 	return 2;
 	}
 	//now is normal case:	
@@ -272,16 +271,17 @@ int     delStrInFile(char * FileName,int len,int point)//note:the point means th
                   fseek(myfile, len, SEEK_CUR);
           }
 	  int fd=fileno(myfile);
-	  ftruncate(fd,wholeFileLen-len-1);
+	 int res= ftruncate(fd,wholeFileLen-len-1);
+res++;
 	fclose(myfile);
 	return 0;
 }
 void updataLine(char * FileName,char * newStr,int line)
 {
 
-	g_return_if_fail( FileName != NULL);
-	g_return_if_fail( newStr != NULL);
-	g_return_if_fail( line >= 0);
+/*	g_return_if_fail( FileName != NULL);*/
+/*	g_return_if_fail( newStr != NULL);*/
+/*	g_return_if_fail( line >= 0);*/
 	printf("line is %d and newstr is :\n%s\n",line,newStr);
 
 	char * fileName=FileName;
@@ -297,7 +297,8 @@ void updataLine(char * FileName,char * newStr,int line)
 	{
 		int fd = open(FileName,O_RDWR);
 		
-		ftruncate(fd,loc[(line)*2]);
+		int res=ftruncate(fd,loc[(line)*2]);
+		res++;		
 		close(fd);
 		addLineToFile(FileName,newStr);
 		addLineToFile(FileName,"\n");
@@ -323,7 +324,8 @@ void updataLine(char * FileName,char * newStr,int line)
 	int fd = open(FileName,O_RDWR);
 	//int fd=fileno(myfile);
 	//printf("loc[(line)*2]  \n%d\n",loc[(line)*2]);
-	/*int res=*/ftruncate(fd,loc[(line)*2]);
+	int res=ftruncate(fd,loc[(line)*2]);
+	res++;
 	//int errsv = errno;
 	close(fd);
 	//printf("res is  and errno is\n%d  %d\n",res,errsv);
@@ -395,7 +397,8 @@ int delLine(char * FileName,int line)
 	char * str=(char *)malloc(sizeof(char)*len+1);
 
 	str[len]=0;// so you can see str as a string,and you can use strlen() to get its len
-        fread(str,sizeof(char),len,myfile);
+        int lin=fread(str,sizeof(char),len,myfile);
+	lin++;
 //printf("readNum is  %d\n",readNum);
 	fclose(myfile);
 
@@ -433,13 +436,13 @@ char * getStrInFile2(char * FileName,int len,int point)//返回获取的字符�
         	fseek(myfile,point, SEEK_SET);
 /*		printf("3\n");*/
 		}
-       int pos = ftell(myfile);
+/*       ftell(myfile);*/
 /*        printf("pos %d\n",pos);*/
 
 	char * str=(char *)malloc(sizeof(char)*len+1);
 
 	str[len]=0;// so you can see str as a string,and you can use strlen() to get its len
-        int readNum=fread(str,sizeof(char),len,myfile);
+        int res=fread(str,sizeof(char),len,myfile);res++;
 /*printf("readNum is  %d\n",readNum);*/
 	fclose(myfile);
 
@@ -473,7 +476,7 @@ int putStrInFile(char * FileName,char * str,int len,int point)//在文件特定�
 	else
 		fseek(myfile,point, SEEK_SET);
 
-        ftell(myfile);
+/*        ftell(myfile);*/
      //   printf("1 %d\n",pos);
 	fwrite(str,sizeof(char),len,myfile);
 	fclose(myfile);

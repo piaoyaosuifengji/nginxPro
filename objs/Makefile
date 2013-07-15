@@ -15,8 +15,8 @@ ALL_INCS = -I src/core \
 	-I objs \
 	-I src/http \
 	-I src/http/modules \
-	-I src/mail
-
+	-I src/mail \
+	-I src/mytest
 
 CORE_DEPS = src/core/nginx.h \
 	src/core/ngx_config.h \
@@ -221,6 +221,7 @@ objs/nginx:	objs/src/core/nginx.o \
 	objs/src/http/modules/ngx_http_upstream_least_conn_module.o \
 	objs/src/http/modules/ngx_http_upstream_keepalive_module.o \
 	objs/addon/mytest/ngx_http_mytest_module.o \
+	objs/addon/mytest/fileOperating.o \
 	objs/ngx_modules.o \
 	/usr/local/src/pcre-8.21/.libs/libpcre.a \
 	/usr/local/src/zlib-1.2.8/libz.a
@@ -337,6 +338,7 @@ objs/nginx:	objs/src/core/nginx.o \
 	objs/src/http/modules/ngx_http_upstream_least_conn_module.o \
 	objs/src/http/modules/ngx_http_upstream_keepalive_module.o \
 	objs/addon/mytest/ngx_http_mytest_module.o \
+	objs/addon/mytest/fileOperating.o \
 	objs/ngx_modules.o \
 	-lpthread -lcrypt /usr/local/src/pcre-8.21/.libs/libpcre.a /usr/local/src/openssl-1.0.1c/.openssl/lib/libssl.a /usr/local/src/openssl-1.0.1c/.openssl/lib/libcrypto.a -ldl /usr/local/src/zlib-1.2.8/libz.a
 	
@@ -1117,13 +1119,21 @@ objs/src/http/modules/ngx_http_upstream_keepalive_module.o:	$(CORE_DEPS) $(HTTP_
 	$(CC) -c -g $(CFLAGS) $(CORE_INCS) $(HTTP_INCS) \
 		-o objs/src/http/modules/ngx_http_upstream_keepalive_module.o \
 		src/http/modules/ngx_http_upstream_keepalive_module.c
+objs/addon/mytest/fileOperating.o:	$(ADDON_DEPS) \
+	./src/mytest/fileOperating.h  \
+	./src/mytest/fileOperating.c  
+	$(CC) -c -g $(CFLAGS)  $(ALL_INCS) \
+		-o objs/addon/mytest/fileOperating.o \
+		./src/mytest/fileOperating.c 
 
 
 objs/addon/mytest/ngx_http_mytest_module.o:	$(ADDON_DEPS) \
-	/home/jty/code/nginx-1.4.1/src/mytest/ngx_http_mytest_module.c
+	./src/mytest/ngx_http_mytest_module.c  \
+	./objs/addon/mytest/fileOperating.o
 	$(CC) -c -g $(CFLAGS)  $(ALL_INCS) \
 		-o objs/addon/mytest/ngx_http_mytest_module.o \
-		/home/jty/code/nginx-1.4.1/src/mytest/ngx_http_mytest_module.c
+		./src/mytest/ngx_http_mytest_module.c \
+		./objs/addon/mytest/fileOperating.o
 
 
 /usr/local/src/pcre-8.21/pcre.h:	/usr/local/src/pcre-8.21/Makefile
